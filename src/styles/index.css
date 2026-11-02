@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 195 60% 97%;
+    --foreground: 210 60% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 60% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 60% 12%;
+    --primary: 192 91% 32%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 190 60% 92%;
+    --secondary-foreground: 205 70% 18%;
+    --muted: 195 40% 93%;
+    --muted-foreground: 205 20% 36%;
+    --accent: 174 70% 88%;
+    --accent-foreground: 190 80% 18%;
+    --destructive: 350 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 152 65% 30%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 92% 38%;
+    --warning-foreground: 0 0% 100%;
+    --border: 195 35% 85%;
+    --input: 195 35% 80%;
+    --ring: 190 90% 38%;
+    --radius: 0.9rem;
+    --glass: 0 0% 100%;
+    --glass-alpha: 0.72;
+    color-scheme: light;
+  }
+
+  .dark {
+    --background: 212 72% 6%;
+    --foreground: 190 40% 94%;
+    --card: 211 60% 10%;
+    --card-foreground: 190 40% 94%;
+    --popover: 211 60% 10%;
+    --popover-foreground: 190 40% 94%;
+    --primary: 186 85% 52%;
+    --primary-foreground: 212 72% 8%;
+    --secondary: 205 55% 16%;
+    --secondary-foreground: 190 40% 92%;
+    --muted: 207 45% 15%;
+    --muted-foreground: 195 20% 70%;
+    --accent: 182 55% 20%;
+    --accent-foreground: 180 70% 88%;
+    --destructive: 352 85% 62%;
+    --destructive-foreground: 212 72% 8%;
+    --success: 152 60% 50%;
+    --success-foreground: 212 72% 8%;
+    --warning: 38 95% 58%;
+    --warning-foreground: 212 72% 8%;
+    --border: 205 45% 20%;
+    --input: 205 45% 24%;
+    --ring: 186 85% 52%;
+    --glass: 211 60% 12%;
+    --glass-alpha: 0.62;
+    color-scheme: dark;
+  }
+
+  * { @apply border-border; }
+  html { -webkit-tap-highlight-color: transparent; }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1, h2, h3, h4 { @apply font-display tracking-tight; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  :focus-visible { @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background; }
+}
+
+@layer components {
+  .glass {
+    background: hsl(var(--glass) / var(--glass-alpha));
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    @apply border border-white/40 dark:border-white/10 shadow-[0_8px_30px_-12px_rgba(8,47,73,0.25)];
+  }
+  .ocean-gradient {
+    background-image:
+      radial-gradient(1200px 500px at 20% -10%, rgba(34, 211, 238, 0.35), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(45, 212, 191, 0.25), transparent 60%),
+      linear-gradient(180deg, #0e7490 0%, #0b3b55 55%, #04192b 100%);
+  }
+  .page-backdrop {
+    background-image:
+      radial-gradient(800px 400px at 0% 0%, hsl(186 85% 60% / 0.12), transparent 60%),
+      radial-gradient(700px 400px at 100% 10%, hsl(174 70% 50% / 0.10), transparent 60%);
+  }
+  .tabular { font-variant-numeric: tabular-nums; }
+  .prose-dive p { @apply leading-relaxed text-muted-foreground; }
+  .prose-dive strong { @apply text-foreground; }
+}
+
+/* Leaflet adjustments */
+.leaflet-container { font: inherit; border-radius: 1rem; z-index: 0; }
+.dark .leaflet-tile-pane { filter: brightness(0.75) contrast(1.1) saturate(0.85); }
+.dark .leaflet-popup-content-wrapper, .dark .leaflet-popup-tip { background: hsl(var(--card)); color: hsl(var(--card-foreground)); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
