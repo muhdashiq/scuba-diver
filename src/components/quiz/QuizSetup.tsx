@@ -1,24 +1,18 @@
-import { BrainCircuit, Play, Timer } from 'lucide-react';
-import { useId, useMemo, useState } from 'react';
+import { Play, Shuffle, Timer } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import type { Difficulty, QuizCategory } from '@/types';
 import { QUIZ_CATEGORIES, QUIZ_QUESTIONS } from '@/data/quizQuestions';
 import { filterQuestions, type QuizConfig } from '@/utils/quizEngine';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+import { SegmentedControl } from '@/components/ui/segmented';
+import { ListGroup, ListRow, IconTile } from '@/components/common/List';
+import { StickyActions } from '@/components/common/StickyActions';
 import { cn } from '@/lib/utils';
 
 export interface QuizSetupValue extends QuizConfig {
   timed: boolean;
 }
-
-const DIFFICULTIES: { id: Difficulty | 'mixed'; label: string }[] = [
-  { id: 'mixed', label: 'Mixed' },
-  { id: 'beginner', label: 'Beginner' },
-  { id: 'intermediate', label: 'Intermediate' },
-  { id: 'advanced', label: 'Advanced' },
-];
 
 export function QuizSetup({ onStart }: { onStart: (v: QuizSetupValue) => void }) {
   const [categories, setCategories] = useState<QuizCategory[]>([]);
@@ -26,76 +20,51 @@ export function QuizSetup({ onStart }: { onStart: (v: QuizSetupValue) => void })
   const [count, setCount] = useState(10);
   const [timed, setTimed] = useState(false);
   const [shuffle, setShuffle] = useState(true);
-  const timedId = useId();
-  const shuffleId = useId();
 
   const cfgCats = categories.length ? categories : ('all' as const);
   const available = useMemo(() => filterQuestions(QUIZ_QUESTIONS, { categories: cfgCats, difficulty }).length, [cfgCats, difficulty]);
   const toggle = (c: QuizCategory) => setCategories((cur) => (cur.includes(c) ? cur.filter((x) => x !== c) : [...cur, c]));
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2"><BrainCircuit className="h-5 w-5 text-primary" aria-hidden="true" /> Build your quiz</CardTitle>
-        <CardDescription>Pick categories (or none for all), a difficulty and a mode.</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <fieldset className="space-y-2">
-          <legend className="mb-2 text-sm font-semibold">Categories</legend>
-          <div className="flex flex-wrap gap-2">
-            {QUIZ_CATEGORIES.map((c) => {
-              const on = categories.includes(c.id);
-              return (
-                <button key={c.id} type="button" aria-pressed={on} title={c.description} onClick={() => toggle(c.id)}
-                  className={cn('min-h-10 rounded-full border px-3.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', on ? 'border-primary bg-primary text-primary-foreground' : 'hover:bg-accent')}>
-                  {c.label}
-                </button>
-              );
-            })}
-          </div>
-          <p className="text-xs text-muted-foreground">{categories.length ? `${categories.length} selected` : 'All categories'}</p>
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-2 text-sm font-semibold">Difficulty</legend>
-          <div className="inline-flex flex-wrap gap-1 rounded-2xl bg-muted p-1">
-            {DIFFICULTIES.map((d) => (
-              <button key={d.id} type="button" aria-pressed={difficulty === d.id} onClick={() => setDifficulty(d.id)}
-                className={cn('min-h-9 rounded-xl px-3 text-sm font-semibold text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', difficulty === d.id && 'bg-background text-foreground shadow-sm')}>
-                {d.label}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-2 text-sm font-semibold">Number of questions</legend>
-          <div className="inline-flex flex-wrap gap-1 rounded-2xl bg-muted p-1">
-            {[5, 10, 15, 20].map((n) => (
-              <button key={n} type="button" aria-pressed={count === n} onClick={() => setCount(n)}
-                className={cn('min-h-9 min-w-12 rounded-xl px-3 text-sm font-semibold text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', count === n && 'bg-background text-foreground shadow-sm')}>
-                {n}
-              </button>
-            ))}
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">{available} matching question{available === 1 ? '' : 's'} available{available < count ? ` — the quiz will use all ${available}` : ''}.</p>
-        </fieldset>
-
-        <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-          <div className="flex items-center gap-3">
-            <Switch id={timedId} checked={timed} onCheckedChange={setTimed} />
-            <Label htmlFor={timedId} className="flex items-center gap-1.5"><Timer className="h-4 w-4" aria-hidden="true" /> Timed mode</Label>
-          </div>
-          <div className="flex items-center gap-3">
-            <Switch id={shuffleId} checked={shuffle} onCheckedChange={setShuffle} />
-            <Label htmlFor={shuffleId}>Randomise questions & answers</Label>
-          </div>
+    <div className="space-y-6">
+      <section className="space-y-2">
+        <div className="flex items-end justify-between px-4">
+          <h2 className="text-footnote font-medium uppercase tracking-wide text-muted-foreground">Topics</h2>
+          {categories.length > 0 && <button type="button" className="text-subhead text-primary" onClick={() => setCategories([])}>Clear</button>}
         </div>
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Topics">
+          {QUIZ_CATEGORIES.map((c) => {
+            const on = categories.includes(c.id);
+            return (
+              <button key={c.id} type="button" aria-pressed={on} title={c.description} onClick={() => toggle(c.id)} className={cn('h-9 rounded-full px-3.5 text-subhead font-medium transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', on ? 'bg-primary text-primary-foreground' : 'bg-card hover:bg-accent')}>
+                {c.label}
+              </button>
+            );
+          })}
+        </div>
+        <p className="px-4 text-footnote text-muted-foreground">{categories.length ? `${categories.length} selected` : 'All topics'} · {available} question{available === 1 ? '' : 's'} available</p>
+      </section>
 
-        <Button size="lg" variant="ocean" disabled={available === 0} onClick={() => onStart({ categories: cfgCats, difficulty, count, shuffle, timed })}>
-          <Play /> Start quiz
+      <section className="space-y-2">
+        <h2 className="px-4 text-footnote font-medium uppercase tracking-wide text-muted-foreground">Difficulty</h2>
+        <SegmentedControl label="Difficulty" value={difficulty} onChange={setDifficulty} options={[{ value: 'mixed', label: 'Mixed' }, { value: 'beginner', label: 'Beginner' }, { value: 'intermediate', label: 'Intermediate' }, { value: 'advanced', label: 'Advanced' }]} />
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="px-4 text-footnote font-medium uppercase tracking-wide text-muted-foreground">Questions</h2>
+        <SegmentedControl label="Number of questions" value={count} onChange={setCount} options={[5, 10, 15, 20].map((n) => ({ value: n, label: String(n) }))} />
+      </section>
+
+      <ListGroup footer="Timed mode gives you around 40 seconds per question.">
+        <ListRow leading={<IconTile icon={Timer} color="bg-[#FF9500]" />} title={<label htmlFor="quiz-timed">Timed mode</label>} trailing={<Switch id="quiz-timed" checked={timed} onCheckedChange={setTimed} />} />
+        <ListRow leading={<IconTile icon={Shuffle} color="bg-[#5856D6]" />} title={<label htmlFor="quiz-shuffle">Shuffle questions</label>} trailing={<Switch id="quiz-shuffle" checked={shuffle} onCheckedChange={setShuffle} />} />
+      </ListGroup>
+
+      <StickyActions>
+        <Button size="lg" className="flex-1" disabled={available === 0} onClick={() => onStart({ categories: cfgCats, difficulty, count, shuffle, timed })}>
+          <Play className="fill-current" /> Start Quiz
         </Button>
-      </CardContent>
-    </Card>
+      </StickyActions>
+    </div>
   );
 }

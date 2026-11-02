@@ -5,7 +5,7 @@ import { Diver } from './Diver';
 import { Fish } from './Fish';
 
 /** Animated underwater backdrop for hero sections. Purely decorative. */
-export function UnderwaterScene({ showDiver = true, className = '' }: { showDiver?: boolean; className?: string }) {
+export function UnderwaterScene({ showDiver = true, minimal = false, className = '' }: { showDiver?: boolean; minimal?: boolean; className?: string }) {
   const reduce = useReducedMotion();
   const ray = useId();
   const swim = (duration: number, delay = 0, from = '110%', to = '-30%') =>
@@ -28,6 +28,7 @@ export function UnderwaterScene({ showDiver = true, className = '' }: { showDive
       {/* Caustic shimmer */}
       <div className="absolute -inset-10 animate-caustics bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_35%),radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.08),transparent_30%)]" />
 
+      {!minimal && (<>
       {/* Fish school */}
       <motion.div className="absolute top-[18%] w-24 sm:w-28" {...swim(26, 0)}>
         <Fish body="#fb923c" fin="#ea580c" variant="tropical" />
@@ -68,7 +69,8 @@ export function UnderwaterScene({ showDiver = true, className = '' }: { showDive
           <path key={x} d={`M${x} 124 C ${x - 6} 100, ${x + 8} 90, ${x} ${70 - (i % 2) * 12}`} stroke="#14b8a6" strokeWidth="4" fill="none" opacity="0.7" />
         ))}
       </svg>
-      <Bubbles count={16} />
+      </>)}
+      <Bubbles count={minimal ? 6 : 16} />
     </div>
   );
 }

@@ -13,7 +13,22 @@ export const DEFAULT_PROFILE: UserProfile = {
   createdAt: new Date(0).toISOString(),
 };
 
+export type FavoriteKind = 'lesson' | 'module' | 'specialty' | 'marine' | 'shop';
+
+export interface Favorite {
+  id: string; // unique key, e.g. "lesson:ow-03"
+  kind: FavoriteKind;
+  title: string;
+  subtitle?: string;
+  to: string;
+  addedAt: string;
+}
+
 export interface AppState {
+  onboarded: boolean;
+  favorites: Record<string, Favorite>;
+  dismissedTips: string[];
+  readNotifications: string[];
   profile: UserProfile;
   units: UnitSystem;
   completedLessons: Record<string, string>; // lessonId -> ISO date completed
@@ -34,16 +49,26 @@ export interface AppState {
   setChecklistItems: (ids: string[], checked: boolean) => void;
   resetChecklist: () => void;
   savePlan: (input: DivePlanInput) => SavedDivePlan;
+  updatePlan: (id: string, input: DivePlanInput) => void;
   deletePlan: (id: string) => void;
   setPlanDraft: (input: DivePlanInput | null) => void;
   setLastLocation: (l: GeoLocation | null) => void;
   setWhatsappTemplate: (t: string | null) => void;
   resetAll: () => void;
+  completeOnboarding: () => void;
+  restartOnboarding: () => void;
+  toggleFavorite: (f: Omit<Favorite, 'addedAt'>) => boolean;
+  dismissTip: (id: string) => void;
+  markNotificationsRead: (ids: string[]) => void;
 }
 
 const uid = () => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
 
 const initialData = {
+  onboarded: false,
+  favorites: {} as Record<string, Favorite>,
+  dismissedTips: [] as string[],
+  readNotifications: [] as string[],
   profile: DEFAULT_PROFILE,
   units: 'metric' as UnitSystem,
   completedLessons: {},
@@ -88,17 +113,48 @@ export const useAppStore = create<AppState>()(
         set((s) => ({ savedPlans: [plan, ...s.savedPlans].slice(0, 30) }));
         return plan;
       },
+      updatePlan: (id, input) => set((s) => ({ savedPlans: s.savedPlans.map((p) => (p.id === id ? { ...p, input } : p)) })),
       deletePlan: (id) => set((s) => ({ savedPlans: s.savedPlans.filter((p) => p.id !== id) })),
       setPlanDraft: (planDraft) => set({ planDraft }),
       setLastLocation: (lastLocation) => set({ lastLocation }),
       setWhatsappTemplate: (whatsappTemplate) => set({ whatsappTemplate }),
       resetAll: () => set({ ...initialData }),
+      completeOnboarding: () => set({ onboarded: true }),
+      restartOnboarding: () => set({ onboarded: false }),
+      toggleFavorite: (f) => {
+        let added = false;
+        set((s) => {
+          const next = { ...s.favorites };
+          if (next[f.id]) delete next[f.id];
+          else {
+            next[f.id] = { ...f, addedAt: new Date().toISOString() };
+            added = true;
+          }
+          return { favorites: next };
+        });
+        return added;
+      },
+      dismissTip: (id) => set((s) => ({ dismissedTips: s.dismissedTips.includes(id) ? s.dismissedTips : [...s.dismissedTips, id] })),
+      markNotificationsRead: (ids) => set((s) => ({ readNotifications: [...new Set([...s.readNotifications, ...ids])].slice(-200) })),
     }),
     {
       name: 'scubadive-state',
-      version: 1,
+      version: 2,
+      // v1 → v2: users who already used the app skip onboarding.
+      migrate: (persisted, version) => {
+        const state = (persisted ?? {}) as Partial<AppState>;
+        if (version < 2) {
+          const used = !!state.profile?.name || Object.keys(state.completedLessons ?? {}).length > 0 || (state.quizHistory?.length ?? 0) > 0 || (state.savedPlans?.length ?? 0) > 0;
+          return { ...state, onboarded: used, favorites: {}, dismissedTips: [], readNotifications: [] } as AppState;
+        }
+        return state as AppState;
+      },
       storage: createJSONStorage(() => getPersistenceAdapter()),
       partialize: (s) => ({
+        onboarded: s.onboarded,
+        favorites: s.favorites,
+        dismissedTips: s.dismissedTips,
+        readNotifications: s.readNotifications,
         profile: s.profile,
         units: s.units,
         completedLessons: s.completedLessons,

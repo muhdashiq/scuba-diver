@@ -1,15 +1,15 @@
-import { ShieldAlert } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ShieldCheck } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
-/** Prominent educational / safety disclaimer used across the app. */
-export function SafetyNotice({ title = 'Educational use only', children, className }: { title?: string; children: ReactNode; className?: string }) {
+/** Calm, consistent safety note. Present but not shouting. */
+export function SafetyNotice({ title = 'For learning, not certification', children, className }: { title?: string; children: ReactNode; className?: string }) {
   return (
-    <aside role="note" className={cn('flex gap-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm', className)}>
-      <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden="true" />
-      <div className="space-y-1">
+    <aside role="note" className={cn('flex gap-3 rounded-2xl bg-warning/[0.08] p-4 text-subhead', className)}>
+      <ShieldCheck className="mt-px h-5 w-5 shrink-0 text-warning" aria-hidden="true" />
+      <div className="space-y-0.5">
         <p className="font-semibold text-foreground">{title}</p>
-        <div className="text-muted-foreground">{children}</div>
+        <div className="text-muted-foreground [&_strong]:text-foreground">{children}</div>
       </div>
     </aside>
   );

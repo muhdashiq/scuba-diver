@@ -4,13 +4,10 @@ import { cn } from '@/lib/utils';
 
 const Tabs = TabsPrimitive.Root;
 
+/** Rendered as an iOS segmented control. */
 const TabsList = React.forwardRef<React.ElementRef<typeof TabsPrimitive.List>, React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>>(
   ({ className, ...props }, ref) => (
-    <TabsPrimitive.List
-      ref={ref}
-      className={cn('inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl bg-muted p-1 text-muted-foreground [scrollbar-width:none]', className)}
-      {...props}
-    />
+    <TabsPrimitive.List ref={ref} className={cn('inline-flex w-full items-center gap-0.5 rounded-[0.6rem] bg-fill p-0.5 sm:w-auto', className)} {...props} />
   ),
 );
 TabsList.displayName = TabsPrimitive.List.displayName;
@@ -20,7 +17,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
-        'inline-flex min-h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-1.5 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm [&_svg]:size-4',
+        'inline-flex h-8 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-[0.5rem] px-3 text-subhead font-medium text-foreground/80 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-card data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-[0_3px_8px_rgba(0,0,0,0.12),0_3px_1px_rgba(0,0,0,0.04)] dark:data-[state=active]:bg-[#636366] [&_svg]:size-4',
         className,
       )}
       {...props}

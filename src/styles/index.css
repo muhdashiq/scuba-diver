@@ -2,102 +2,125 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * iOS-inspired design tokens.
+ * Light: grouped light-gray background, white surfaces, charcoal text, system blue.
+ * Dark: true black background with elevated #1C1C1E surfaces.
+ * Text colours are tuned for WCAG AA contrast on their surfaces.
+ */
 @layer base {
   :root {
-    --background: 195 60% 97%;
-    --foreground: 210 60% 12%;
+    --background: 240 11% 96%;        /* #F2F2F7 */
+    --foreground: 240 6% 11%;         /* #1C1C1E */
     --card: 0 0% 100%;
-    --card-foreground: 210 60% 12%;
+    --card-foreground: 240 6% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 210 60% 12%;
-    --primary: 192 91% 32%;
+    --popover-foreground: 240 6% 11%;
+    --primary: 211 100% 44%;          /* #0070E0 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 190 60% 92%;
-    --secondary-foreground: 205 70% 18%;
-    --muted: 195 40% 93%;
-    --muted-foreground: 205 20% 36%;
-    --accent: 174 70% 88%;
-    --accent-foreground: 190 80% 18%;
-    --destructive: 350 72% 45%;
+    --secondary: 240 6% 93%;
+    --secondary-foreground: 240 6% 11%;
+    --muted: 240 6% 93%;
+    --muted-foreground: 240 3% 42%;   /* #69696E */
+    --accent: 240 6% 94%;             /* hover / pressed fill */
+    --accent-foreground: 240 6% 11%;
+    --fill: 240 6% 94%;               /* input & control fill */
+    --separator: 240 6% 88%;
+    --teal: 188 78% 33%;              /* complementary accent */
+    --teal-foreground: 0 0% 100%;
+    --destructive: 3 64% 48%;         /* muted red */
     --destructive-foreground: 0 0% 100%;
-    --success: 152 65% 30%;
+    --success: 142 62% 32%;           /* soft green (text-safe) */
     --success-foreground: 0 0% 100%;
-    --warning: 35 92% 38%;
+    --warning: 30 92% 36%;            /* warm amber (text-safe) */
     --warning-foreground: 0 0% 100%;
-    --border: 195 35% 85%;
-    --input: 195 35% 80%;
-    --ring: 190 90% 38%;
-    --radius: 0.9rem;
-    --glass: 0 0% 100%;
-    --glass-alpha: 0.72;
+    --border: 240 6% 88%;
+    --input: 240 6% 88%;
+    --ring: 211 100% 44%;
+    --radius: 1rem;
+    --bar: 240 11% 96%;
     color-scheme: light;
   }
 
   .dark {
-    --background: 212 72% 6%;
-    --foreground: 190 40% 94%;
-    --card: 211 60% 10%;
-    --card-foreground: 190 40% 94%;
-    --popover: 211 60% 10%;
-    --popover-foreground: 190 40% 94%;
-    --primary: 186 85% 52%;
-    --primary-foreground: 212 72% 8%;
-    --secondary: 205 55% 16%;
-    --secondary-foreground: 190 40% 92%;
-    --muted: 207 45% 15%;
-    --muted-foreground: 195 20% 70%;
-    --accent: 182 55% 20%;
-    --accent-foreground: 180 70% 88%;
-    --destructive: 352 85% 62%;
-    --destructive-foreground: 212 72% 8%;
-    --success: 152 60% 50%;
-    --success-foreground: 212 72% 8%;
-    --warning: 38 95% 58%;
-    --warning-foreground: 212 72% 8%;
-    --border: 205 45% 20%;
-    --input: 205 45% 24%;
-    --ring: 186 85% 52%;
-    --glass: 211 60% 12%;
-    --glass-alpha: 0.62;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 240 3% 11%;               /* #1C1C1E */
+    --card-foreground: 0 0% 100%;
+    --popover: 240 3% 14%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 211 100% 55%;          /* #1A8CFF */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 3% 17%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 3% 17%;
+    --muted-foreground: 240 3% 62%;   /* #98989F */
+    --accent: 240 3% 20%;
+    --accent-foreground: 0 0% 100%;
+    --fill: 240 3% 17%;
+    --separator: 240 3% 22%;
+    --teal: 186 70% 52%;
+    --teal-foreground: 0 0% 0%;
+    --destructive: 3 90% 63%;
+    --destructive-foreground: 0 0% 0%;
+    --success: 142 60% 52%;
+    --success-foreground: 0 0% 0%;
+    --warning: 36 100% 56%;
+    --warning-foreground: 0 0% 0%;
+    --border: 240 3% 22%;
+    --input: 240 3% 24%;
+    --ring: 211 100% 55%;
+    --bar: 0 0% 0%;
     color-scheme: dark;
   }
 
   * { @apply border-border; }
-  html { -webkit-tap-highlight-color: transparent; }
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
   html, body { max-width: 100%; overflow-x: clip; }
-  /* Grid items default to min-width:auto, which lets long content (URLs, maps, rows of
-     buttons) push a track wider than the screen. Allow them to shrink instead. */
-  .grid > * { min-width: 0; }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-sans text-body antialiased;
     font-feature-settings: 'cv11', 'ss01';
   }
-  h1, h2, h3, h4 { @apply font-display tracking-tight; text-wrap: balance; }
+  h1, h2, h3, h4 { @apply font-display; text-wrap: balance; }
   p { text-wrap: pretty; }
   :focus-visible { @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background; }
+  /* Grid items default to min-width:auto, which lets long content push a track wider than the screen. */
+  .grid > * { min-width: 0; }
+  button, a { -webkit-touch-callout: none; }
 }
 
 @layer components {
-  .glass {
-    background: hsl(var(--glass) / var(--glass-alpha));
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    @apply border border-white/40 dark:border-white/10 shadow-[0_8px_30px_-12px_rgba(8,47,73,0.25)];
-  }
-  .ocean-gradient {
-    background-image:
-      radial-gradient(1200px 500px at 20% -10%, rgba(34, 211, 238, 0.35), transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, rgba(45, 212, 191, 0.25), transparent 60%),
-      linear-gradient(180deg, #0e7490 0%, #0b3b55 55%, #04192b 100%);
-  }
-  .page-backdrop {
-    background-image:
-      radial-gradient(800px 400px at 0% 0%, hsl(186 85% 60% / 0.12), transparent 60%),
-      radial-gradient(700px 400px at 100% 10%, hsl(174 70% 50% / 0.10), transparent 60%);
+  /* Translucent bar material (nav bar, tab bar) */
+  .bar-material {
+    background: hsl(var(--bar) / 0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
   }
   .tabular { font-variant-numeric: tabular-nums; }
-  .prose-dive p { @apply leading-relaxed text-muted-foreground; }
+  .prose-dive p { @apply text-body leading-relaxed text-foreground/85; }
   .prose-dive strong { @apply text-foreground; }
+  .pressable { @apply transition-[transform,background-color,opacity] duration-150 ease-out active:scale-[0.98] active:opacity-90; }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .no-scrollbar { scrollbar-width: none; }
+  /* Hairline separators between grouped-list rows, inset to align with the text. */
+  .form-group > * + *::before,
+  .list-group > li + li > *::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: var(--sep-inset, 1rem);
+    height: 1px;
+    transform: scaleY(0.6);
+    transform-origin: top;
+    background: hsl(var(--separator));
+    pointer-events: none;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
 /* Leaflet adjustments */

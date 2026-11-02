@@ -3,44 +3,38 @@ import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { PageSkeleton } from '@/components/common/States';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
+import { Toaster } from '@/components/common/Toaster';
+import { ConfirmHost } from '@/components/common/ConfirmHost';
+import { Onboarding } from '@/components/onboarding/Onboarding';
+import { useAppStore } from '@/store/useAppStore';
 import { Sidebar } from './Sidebar';
-import { BottomTabBar, MobileHeader, MobileMenu, useMobileMenu } from './MobileNav';
+import { TabBar } from './TabBar';
 
 export function AppLayout() {
   const location = useLocation();
   const reduce = useReducedMotion();
-  const menu = useMobileMenu();
+  const onboarded = useAppStore((s) => s.onboarded);
   return (
-    <div className="page-backdrop min-h-dvh">
+    <div className="min-h-dvh">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-xl focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground">
         Skip to content
       </a>
       <ScrollToTop />
       <Sidebar />
-      <MobileHeader onOpenMenu={menu.openMenu} />
-      <MobileMenu open={menu.open} onOpenChange={menu.setOpen} />
-      <div className="lg:pl-72">
-        <main id="main" tabIndex={-1} className="mx-auto w-full max-w-7xl px-4 pb-28 pt-4 focus:outline-none sm:px-6 lg:px-8 lg:pb-12 lg:pt-8">
+      <div className="lg:pl-64">
+        <main id="main" tabIndex={-1} className="mx-auto w-full max-w-5xl px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] focus:outline-none sm:px-6 lg:px-8 lg:pb-12">
           {/* Enter-only transition: an exit animation would re-render the new Outlet inside the old wrapper. */}
           <Suspense fallback={<PageSkeleton />}>
-            <motion.div
-              key={location.pathname}
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-            >
+            <motion.div key={location.pathname} initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }}>
               <Outlet />
             </motion.div>
           </Suspense>
-          <footer className="mt-12 border-t pt-6 text-xs text-muted-foreground">
-            <p>
-              ScubaDive is an educational companion. It is not a substitute for training by a qualified instructor, a dive computer, or the procedures of a recognised training agency.
-              Weather data: Open-Meteo. Map data © OpenStreetMap contributors.
-            </p>
-          </footer>
         </main>
       </div>
-      <BottomTabBar onOpenMenu={menu.openMenu} />
+      <TabBar />
+      <Toaster />
+      <ConfirmHost />
+      {!onboarded && <Onboarding />}
     </div>
   );
 }

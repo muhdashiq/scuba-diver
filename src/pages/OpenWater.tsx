@@ -1,8 +1,7 @@
-import { Waves } from 'lucide-react';
-import { PageHeader } from '@/components/common/PageHeader';
-import { SafetyNotice } from '@/components/common/SafetyNotice';
-import { LessonCard } from '@/components/learning/LessonCard';
-import { ProgressRing } from '@/components/common/ProgressRing';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { ListGroup } from '@/components/common/List';
+import { LessonRow } from '@/components/learning/LessonRow';
+import { Progress } from '@/components/ui/progress';
 import { OPEN_WATER_LESSONS } from '@/data/openWater';
 import { useAppStore } from '@/store/useAppStore';
 import { useLearningProgress } from '@/hooks/useLearningProgress';
@@ -11,27 +10,22 @@ export default function OpenWater() {
   const completed = useAppStore((s) => s.completedLessons);
   const { openWater } = useLearningProgress();
   return (
-    <div className="space-y-8">
-      <PageHeader
-        icon={Waves}
-        eyebrow="Learning pathway"
-        title="Open Water Diver"
-        description="Fifteen lessons covering the knowledge behind your first certification. Work through them in order and check your understanding as you go."
-        actions={
-          <ProgressRing value={openWater.percent} tone="light" size={84} label={`Open Water progress ${openWater.percent}%`}>
-            <span className="text-base font-extrabold">{openWater.done}/{openWater.total}</span>
-            <span className="text-[10px] uppercase tracking-wide text-cyan-100">lessons</span>
-          </ProgressRing>
+    <>
+      <ScreenHeader
+        back={{ to: '/learn', label: 'Learn' }}
+        title="Open Water"
+        subtitle={
+          <span className="flex items-center gap-3 pt-1">
+            <Progress value={openWater.percent} className="max-w-[10rem]" aria-label="Open Water progress" />
+            <span className="tabular">{openWater.done} of {openWater.total} lessons</span>
+          </span>
         }
       />
-      <SafetyNotice>These lessons support — but never replace — an Open Water course with in-water training by a qualified instructor.</SafetyNotice>
-      <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ListGroup footer="These lessons support — but never replace — an Open Water course with in-water training by a qualified instructor.">
         {OPEN_WATER_LESSONS.map((l) => (
-          <li key={l.id}>
-            <LessonCard to={`/open-water/${l.id}`} index={l.order} title={l.title} summary={l.summary} illustration={l.illustration} duration={l.duration} completed={!!completed[l.id]} />
-          </li>
+          <LessonRow key={l.id} to={`/open-water/${l.id}`} index={l.order} title={l.title} subtitle={`${l.duration} min · ${l.summary}`} illustration={l.illustration} completed={!!completed[l.id]} />
         ))}
-      </ol>
-    </div>
+      </ListGroup>
+    </>
   );
 }

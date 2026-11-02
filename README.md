@@ -4,20 +4,28 @@ A responsive, mobile-first scuba diving web app built with React and TypeScript.
 
 > **Safety first.** ScubaDive is an educational companion. It does not replace training by a qualified instructor, a dive computer, or the procedures of a recognised training agency. The planner never calculates decompression schedules or no-decompression limits, and nothing in the app clears anyone to dive.
 
+## Design
+
+ScubaDive is designed as a premium consumer app following the Apple Human Interface Guidelines. It takes cues from Apple Health, Wallet and Weather.
+
+- **Navigation:** five tabs (**Home · Learn · Dive · Explore · Profile**) in a bottom tab bar on phones, and an iPad-style sidebar on desktop. Secondary screens use a translucent nav bar with a back button, and the large title collapses into the bar as you scroll.
+- **Visual language:** system blue, grouped light-gray backgrounds with white surfaces (true black in dark mode), and charcoal and muted-gray text. Status colours are soft green, warm amber and muted red, all tuned for WCAG AA contrast. Type uses SF Pro via the system font stack (Inter elsewhere) on an iOS Dynamic Type scale.
+- **Components:** inset grouped lists with Settings-style icon tiles, segmented controls, iOS switches, round checkmarks, bottom sheets with grabbers, action-sheet confirmations, banner toasts with Undo, skeletons and pull-to-refresh.
+- **First run:** a welcome screen, an "About you" step and a location permission pre-prompt that explains why before the browser asks. Every empty state explains what to do next and offers one clear action, and dismissible tips give contextual guidance.
+- **Mobile first:** primary actions stay within thumb reach (sticky action bars sit above the tab bar), touch targets are at least 44 px, safe areas are respected, and nothing scrolls sideways except intentional chip rows and the hourly forecast. This is checked automatically at 320–412 px.
+- **Motion:** quick, subtle and purposeful: press states, page fades, sliding segmented thumbs, spring toasts and sheets. Everything respects `prefers-reduced-motion`.
+
 ## Features
 
-| Area | What it does |
+| Tab | What's there |
 | --- | --- |
-| **Dashboard** | Animated underwater hero, diver profile and certification, dives logged, learning progress, readiness status, upcoming plans, live conditions, nearby shops, quick links, recent quizzes |
-| **Learning Center** | 15 Open Water lessons (objectives, explanations, diagrams, real-world examples, knowledge checks, completion tracking) and 10 Advanced Open Water modules (theory, equipment, planning, skills, safety, quizzes) |
-| **Specialties** | 17 specialty previews: overview, prerequisites, equipment, theory, skills, risks, learning pathway and quiz, each with a clear "not certification" notice |
-| **Knowledge Quiz** | 73 questions across 11 categories and 3 difficulty levels. Multiple choice, true/false, image-based, identify-the-equipment and scenario questions. Timed and untimed modes, randomisation, instant feedback with annotated diagrams, a results breakdown, answer review and progress over time |
-| **Dive Readiness** | 37 checks in four categories (personal, equipment, buddy, site), critical-item warnings, per-category progress, saved state. It never declares a diver "safe" |
-| **Dive Planner** | Unit-aware inputs, validation, an illustrative depth profile (descent, bottom, ascent, safety-stop reminder), an educational gas estimate, MOD/ppO₂ for nitrox, the forecast for the dive day, buddy/entry/emergency considerations, advisories, save/print/export |
-| **Weather & Conditions** | Open-Meteo forecast and marine data: current, hourly and 7-day weather, wind, gusts, rain, cloud, sea temperature, waves. Favourable/caution/unfavourable indicators with explanations. Pick a place by search, your location or the map |
-| **Nearby Dive Shops** | OpenStreetMap (Overpass) results in map and card views, distance, contact details, opening hours, directions, and WhatsApp click-to-chat with an editable message |
-| **Marine Life Library** | 26 entries across 9 groups with habitat, ID features, facts and conservation status, plus an image ID quiz |
-| **Profile & Settings** | Profile, completed lessons, quiz history, saved plans, light/dark/system theme, metric/imperial units, backup export/import |
+| **Home** | Greeting with avatar and a notifications bell, a Wallet-style "next dive" card, quick actions, Health-style summary tiles (readiness, conditions, learning, quizzes), continue learning, nearby dive shops, recent activity |
+| **Learn** | 15 Open Water lessons, 10 Advanced Open Water modules, 17 specialty previews (objectives, diagrams, knowledge checks, completion tracking), and a 73-question quiz with image and scenario questions, timed mode, instant feedback, review and history |
+| **Dive** | Dive Planner (iOS form; Plan/Summary views; profile chart, gas estimate, nitrox MOD, forecast for the dive day, advisories; save, edit, share, print, export, delete with undo), Readiness Check (37 checks with round checkmarks; never declares a diver "safe"), Weather & Conditions (Apple-Weather-style live forecast and marine data with favourable/caution/unfavourable explanations) |
+| **Explore** | Offline search across lessons, specialties and marine life, dive shops from OpenStreetMap (list/map, detail sheet with Directions, Call, WhatsApp, Website), and a 26-entry marine-life library with an ID quiz |
+| **Profile** | Avatar and stats, an edit-profile sheet, Favourites, History (quizzes, lessons, plans), Settings (appearance, units, welcome tour, tips, backup/restore, erase data) |
+
+**In-app notifications** are derived from your own data: upcoming dives, outstanding critical checks, rough forecasts and learning reminders. They are never fabricated.
 
 ## Tech stack
 
@@ -98,15 +106,19 @@ Persistence goes through the `PersistenceAdapter` interface in `src/services/sto
 ```
 src/
   components/
-    common/        ThemeProvider, ThemeToggle, PageHeader, LocationSearch, MapView, states…
-    ui/            shadcn-style primitives (button, card, dialog, tabs, checkbox…)
-    navigation/    Sidebar, mobile header, menu sheet, bottom tab bar, layout
-    dashboard/ checklist/ quiz/ learning/ dive-planner/ weather/ dive-shops/ marine-life/
+    common/        ScreenHeader (large title + nav bar), List (inset grouped lists), Avatar,
+                   Toaster, ConfirmHost, PullToRefresh, TipCard, SearchField, StickyActions,
+                   favourite/share buttons, ThemeProvider, LocationSearch, MapView, states…
+    ui/            shadcn-style primitives restyled as iOS controls (button, segmented, switch…)
+    navigation/    TabBar, Sidebar, AppLayout
+    onboarding/ notifications/ checklist/ quiz/ learning/ dive-planner/ weather/ dive-shops/
     illustrations/ original SVG diagrams, hand signals, marine art, animated scene
-  pages/           Dashboard, Learning, OpenWater, LessonPage, AdvancedOpenWater, Specialties,
-                   SpecialtyPage, Quiz, DiveReadiness, DivePlanner, Weather, DiveShops,
-                   MarineLife, Profile, Settings, NotFound
-  hooks/           useAsync, useWeather, useDiveShops, useCurrentLocation, useLearningProgress
+  pages/           Dashboard (Home), Learning, OpenWater, LessonPage, AdvancedOpenWater,
+                   Specialties, SpecialtyPage, Quiz, Dive, DiveReadiness, DivePlanner, Weather,
+                   Explore, DiveShops, MarineLife, Profile, Favorites, History, Settings, NotFound
+  hooks/           useAsync, useWeather, useDiveShops, useCurrentLocation, useLearningProgress,
+                   useNotifications
+  lib/             toast, confirm, share, cn
   services/        weatherService, locationService, diveShopService, http, storage/
   store/           Zustand app store with persistence
   data/            lessons, modules, specialties, quiz bank, checklist, marine life, navigation
@@ -120,7 +132,7 @@ src/
 npm test
 ```
 
-The suite covers unit conversion, dive-planner validation, profile and gas logic, advisories, quiz scoring and shuffling, checklist progress (including that it never declares a diver safe), WhatsApp number handling, weather condition rating, weather API parsing and error handling (HTTP, 429, network, missing marine data), Overpass parsing (including that no contact details are invented), content integrity, theme switching and persistence, and navigation (sidebar, mobile bottom bar, mobile menu, active route, skip link).
+The suite covers unit conversion, dive-planner validation, profile and gas logic, advisories, quiz scoring and shuffling, checklist progress (including that it never declares a diver safe), WhatsApp number handling, weather condition rating, weather API parsing and error handling (HTTP, 429, network, missing marine data), Overpass parsing (including that no contact details are invented), content integrity, theme switching and persistence, navigation (five-tab bar, tab mapping for secondary screens, nested sidebar, active states, skip link), the onboarding flow, content search, favourites, plan editing and deletion, store migration, and class merging for the custom type scale.
 
 ## Deploying to GitHub Pages
 
@@ -167,7 +179,7 @@ git push -u origin main
 
 ## Accessibility and performance
 
-- Semantic landmarks, a skip link, labelled form controls, keyboard-operable controls and an accessible location combobox
+- Semantic landmarks, a skip link, labelled form controls, keyboard-operable controls, an accessible location combobox, and radio semantics on segmented controls
 - Visible focus rings, colour tokens with sufficient contrast in both themes, and `aria-live` feedback for quizzes and checklists
 - `prefers-reduced-motion` is respected everywhere: Framer Motion `MotionConfig reducedMotion="user"`, plus CSS fallbacks
 - Pages are code-split, maps load lazily, API responses are cached in memory, and skeleton loaders, error and empty states are in place

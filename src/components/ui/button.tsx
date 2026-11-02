@@ -3,25 +3,29 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+/** iOS-style buttons: filled, tinted, gray, plain and destructive. */
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition-[background-color,color,box-shadow,transform] duration-150 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'inline-flex select-none items-center justify-center gap-1.5 whitespace-nowrap font-semibold transition-[transform,background-color,opacity,color] duration-150 ease-out active:scale-[0.97] active:opacity-80 disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-[1.15em] [&_svg]:shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90',
-        ocean: 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg shadow-cyan-500/30 hover:brightness-110',
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        tinted: 'bg-primary/12 text-primary hover:bg-primary/[0.18]',
+        secondary: 'bg-fill text-foreground hover:bg-accent',
+        outline: 'border border-separator bg-card text-foreground hover:bg-accent',
+        ghost: 'text-primary hover:bg-primary/10',
+        plain: 'text-foreground hover:bg-accent',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background/60 hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        'destructive-tinted': 'bg-destructive/12 text-destructive hover:bg-destructive/[0.18]',
         link: 'text-primary underline-offset-4 hover:underline',
-        whatsapp: 'bg-[#1f9e55] text-white hover:bg-[#1a8a4a] shadow-md shadow-green-700/20',
+        whatsapp: 'bg-[#1f9e55] text-white hover:bg-[#1a8a4a]',
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-lg px-3 text-xs',
-        lg: 'h-12 rounded-2xl px-6 text-base',
-        icon: 'h-10 w-10',
+        default: 'h-11 rounded-xl px-4 text-callout',
+        sm: 'h-9 rounded-full px-3.5 text-subhead',
+        lg: 'h-[3.25rem] rounded-[0.875rem] px-6 text-headline',
+        icon: 'h-11 w-11 rounded-full text-callout',
+        'icon-sm': 'h-9 w-9 rounded-full text-subhead',
       },
     },
     defaultVariants: { variant: 'default', size: 'default' },

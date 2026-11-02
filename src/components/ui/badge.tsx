@@ -2,16 +2,18 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const badgeVariants = cva('inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors [&_svg]:size-3', {
+const badgeVariants = cva('inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-caption font-semibold [&_svg]:size-3', {
   variants: {
     variant: {
-      default: 'border-transparent bg-primary text-primary-foreground',
-      secondary: 'border-transparent bg-secondary text-secondary-foreground',
-      outline: 'text-foreground',
-      success: 'border-transparent bg-success/15 text-success',
-      warning: 'border-transparent bg-warning/15 text-warning',
-      destructive: 'border-transparent bg-destructive/15 text-destructive',
-      glass: 'border-white/30 bg-white/15 text-white backdrop-blur',
+      default: 'bg-primary/12 text-primary',
+      secondary: 'bg-fill text-muted-foreground',
+      outline: 'border border-separator text-muted-foreground',
+      success: 'bg-success/12 text-success',
+      warning: 'bg-warning/12 text-warning',
+      destructive: 'bg-destructive/12 text-destructive',
+      teal: 'bg-teal/12 text-teal',
+      solid: 'bg-primary text-primary-foreground',
+      glass: 'bg-white/20 text-white backdrop-blur',
     },
   },
   defaultVariants: { variant: 'default' },

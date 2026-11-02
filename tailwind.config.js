@@ -8,8 +8,23 @@ export default {
     container: { center: true, padding: '1rem', screens: { '2xl': '1400px' } },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        // SF Pro on Apple devices; Inter is the closest match elsewhere.
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', 'Inter', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'Inter', '"Segoe UI"', 'Roboto', 'sans-serif'],
+      },
+      opacity: { 8: '0.08', 12: '0.12', 14: '0.14', 18: '0.18', 85: '0.85' },
+      // iOS Dynamic Type scale
+      fontSize: {
+        'large-title': ['2.125rem', { lineHeight: '2.625rem', letterSpacing: '-0.022em', fontWeight: '700' }],
+        title1: ['1.75rem', { lineHeight: '2.125rem', letterSpacing: '-0.02em', fontWeight: '700' }],
+        title2: ['1.375rem', { lineHeight: '1.75rem', letterSpacing: '-0.016em', fontWeight: '600' }],
+        title3: ['1.25rem', { lineHeight: '1.5625rem', letterSpacing: '-0.012em', fontWeight: '600' }],
+        headline: ['1.0625rem', { lineHeight: '1.375rem', letterSpacing: '-0.01em', fontWeight: '600' }],
+        body: ['1.0625rem', { lineHeight: '1.5rem', letterSpacing: '-0.01em' }],
+        callout: ['1rem', { lineHeight: '1.3125rem', letterSpacing: '-0.008em' }],
+        subhead: ['0.9375rem', { lineHeight: '1.25rem', letterSpacing: '-0.006em' }],
+        footnote: ['0.8125rem', { lineHeight: '1.125rem' }],
+        caption: ['0.75rem', { lineHeight: '1rem' }],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -25,6 +40,9 @@ export default {
         card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
         popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
         success: { DEFAULT: 'hsl(var(--success))', foreground: 'hsl(var(--success-foreground))' },
+        fill: 'hsl(var(--fill))',
+        separator: 'hsl(var(--separator))',
+        teal: { DEFAULT: 'hsl(var(--teal))', foreground: 'hsl(var(--teal-foreground))' },
         warning: { DEFAULT: 'hsl(var(--warning))', foreground: 'hsl(var(--warning-foreground))' },
         ocean: {
           50: '#ecfeff', 100: '#cffafe', 200: '#a5f3fc', 300: '#67e8f9', 400: '#22d3ee',
@@ -35,6 +53,7 @@ export default {
       },
       borderRadius: {
         lg: 'var(--radius)',
+        xl: '0.875rem',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
         '2xl': '1.25rem',

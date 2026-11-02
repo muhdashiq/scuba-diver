@@ -1,46 +1,78 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '@/components/common/ThemeProvider';
 import { AppLayout } from '@/components/navigation/AppLayout';
-import { NAV_ITEMS } from '@/data/navigation';
+import { TABS, activeTab } from '@/data/navigation';
+import { useAppStore } from '@/store/useAppStore';
 
 function renderLayout(path = '/') {
   const router = createMemoryRouter(
-    [{ path: '/', element: <AppLayout />, children: [{ index: true, element: <p>Home page</p> }, { path: 'planner', element: <p>Planner page</p> }, { path: '*', element: <p>Other page</p> }] }],
+    [{ path: '/', element: <AppLayout />, children: [{ index: true, element: <p>Home page</p> }, { path: 'dive', element: <p>Dive page</p> }, { path: 'planner', element: <p>Planner page</p> }, { path: '*', element: <p>Other page</p> }] }],
     { initialEntries: [path] },
   );
   render(<ThemeProvider><RouterProvider router={router} /></ThemeProvider>);
 }
 
 describe('navigation', () => {
-  it('lists all 13 sections in the desktop sidebar', () => {
-    renderLayout();
-    const nav = screen.getAllByRole('navigation', { name: 'Main navigation' })[0];
-    for (const item of NAV_ITEMS) expect(within(nav).getByRole('link', { name: item.label })).toBeInTheDocument();
+  beforeEach(() => useAppStore.setState({ onboarded: true }));
+
+  it('uses five primary tabs', () => {
+    expect(TABS.map((t) => t.label)).toEqual(['Home', 'Learn', 'Dive', 'Explore', 'Profile']);
   });
-  it('shows a mobile bottom bar that is hidden on large screens', () => {
+
+  it('maps secondary screens to their tab', () => {
+    expect(activeTab('/planner').label).toBe('Dive');
+    expect(activeTab('/open-water/ow-03').label).toBe('Learn');
+    expect(activeTab('/marine-life').label).toBe('Explore');
+    expect(activeTab('/settings').label).toBe('Profile');
+    expect(activeTab('/').label).toBe('Home');
+  });
+
+  it('shows a mobile tab bar that is hidden on large screens', () => {
     renderLayout();
-    const bar = screen.getByRole('navigation', { name: 'Quick navigation' });
+    const bar = screen.getByRole('navigation', { name: 'Tab bar' });
     expect(bar).toHaveClass('lg:hidden');
-    expect(within(bar).getByRole('link', { name: /Plan/ })).toBeInTheDocument();
+    expect(within(bar).getAllByRole('link')).toHaveLength(5);
+    expect(within(bar).getByRole('link', { name: 'Home' })).toHaveAttribute('aria-current', 'page');
   });
-  it('opens the mobile menu and navigates', async () => {
+
+  it('navigates between tabs', async () => {
     renderLayout();
-    await userEvent.click(screen.getByRole('button', { name: 'Open navigation menu' }));
-    const dialog = await screen.findByRole('dialog');
-    await userEvent.click(within(dialog).getByRole('link', { name: 'Dive Planner' }));
-    expect(await screen.findByText('Planner page')).toBeInTheDocument();
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    const bar = screen.getByRole('navigation', { name: 'Tab bar' });
+    await userEvent.click(within(bar).getByRole('link', { name: 'Dive' }));
+    expect(await screen.findByText('Dive page')).toBeInTheDocument();
+    expect(within(bar).getByRole('link', { name: 'Dive' })).toHaveAttribute('aria-current', 'page');
   });
-  it('marks the active route', () => {
+
+  it('highlights the parent tab and nests its screens in the sidebar', () => {
     renderLayout('/planner');
-    const nav = screen.getAllByRole('navigation', { name: 'Main navigation' })[0];
-    expect(within(nav).getByRole('link', { name: 'Dive Planner' })).toHaveAttribute('aria-current', 'page');
+    const bar = screen.getByRole('navigation', { name: 'Tab bar' });
+    expect(within(bar).getByRole('link', { name: 'Dive' })).toHaveAttribute('aria-current', 'page');
+    const sidebar = screen.getByRole('navigation', { name: 'Main navigation' });
+    expect(within(sidebar).getByRole('link', { name: 'Dive Planner' })).toHaveAttribute('aria-current', 'page');
+    expect(within(sidebar).queryByRole('link', { name: 'Open Water' })).not.toBeInTheDocument();
   });
+
   it('offers a skip link to main content', () => {
     renderLayout();
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main');
+  });
+});
+
+describe('first-time experience', () => {
+  it('shows onboarding until completed and saves the profile', async () => {
+    useAppStore.setState({ onboarded: false });
+    renderLayout();
+    const dialog = screen.getByRole('dialog', { name: /Welcome to/ });
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Continue' }));
+    await userEvent.type(await screen.findByLabelText('First name'), 'Alex');
+    await userEvent.click(screen.getByRole('radio', { name: 'Advanced Open Water Diver' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Not Now' }));
+    expect(useAppStore.getState().onboarded).toBe(true);
+    expect(useAppStore.getState().profile).toMatchObject({ name: 'Alex', certification: 'advanced-open-water' });
+    expect(screen.queryByRole('dialog', { name: /Welcome|About|conditions/ })).not.toBeInTheDocument();
   });
 });

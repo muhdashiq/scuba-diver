@@ -24,7 +24,7 @@ export function ProgressRing({
   const c = 2 * Math.PI * r;
   const clamped = Math.max(0, Math.min(100, value));
   const colors: Record<string, string> = {
-    ocean: 'stroke-cyan-500',
+    ocean: 'stroke-primary',
     success: 'stroke-success',
     warning: 'stroke-warning',
     destructive: 'stroke-destructive',
@@ -33,7 +33,7 @@ export function ProgressRing({
   return (
     <div className={cn('relative inline-flex items-center justify-center', className)} style={{ width: size, height: size }} role="img" aria-label={label ?? `${Math.round(clamped)}%`}>
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} strokeWidth={stroke} className={tone === 'light' ? 'stroke-white/20' : 'stroke-muted'} fill="none" />
+        <circle cx={size / 2} cy={size / 2} r={r} strokeWidth={stroke} className={tone === 'light' ? 'stroke-white/25' : 'stroke-fill'} fill="none" />
         <motion.circle
           cx={size / 2}
           cy={size / 2}
@@ -48,7 +48,7 @@ export function ProgressRing({
           transition={{ duration: reduce ? 0 : 1, ease: 'easeOut' }}
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">{children ?? <span className="text-lg font-bold tabular">{Math.round(clamped)}%</span>}</div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">{children ?? <span className="text-headline tabular">{Math.round(clamped)}%</span>}</div>
     </div>
   );
 }

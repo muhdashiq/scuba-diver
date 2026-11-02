@@ -6,9 +6,9 @@ const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & { indicatorClassName?: string }
 >(({ className, value, indicatorClassName, ...props }, ref) => (
-  <ProgressPrimitive.Root ref={ref} value={value} className={cn('relative h-2.5 w-full overflow-hidden rounded-full bg-secondary', className)} {...props}>
+  <ProgressPrimitive.Root ref={ref} value={value} className={cn('relative h-1.5 w-full overflow-hidden rounded-full bg-fill', className)} {...props}>
     <ProgressPrimitive.Indicator
-      className={cn('h-full w-full flex-1 rounded-full bg-gradient-to-r from-cyan-500 to-teal-400 transition-transform duration-700 ease-out', indicatorClassName)}
+      className={cn('h-full w-full flex-1 rounded-full bg-primary transition-transform duration-700 ease-out', indicatorClassName)}
       style={{ transform: `translateX(-${100 - (value ?? 0)}%)` }}
     />
   </ProgressPrimitive.Root>

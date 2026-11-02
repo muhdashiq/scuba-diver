@@ -3,13 +3,13 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { AlertTriangle, Info, OctagonAlert, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const alertVariants = cva('relative flex gap-3 rounded-2xl border p-4 text-sm [&>svg]:mt-0.5 [&>svg]:size-5 [&>svg]:shrink-0', {
+const alertVariants = cva('relative flex gap-3 rounded-2xl p-4 text-subhead [&>svg]:mt-px [&>svg]:size-5 [&>svg]:shrink-0', {
   variants: {
     variant: {
-      info: 'border-primary/30 bg-primary/5 text-foreground [&>svg]:text-primary',
-      caution: 'border-warning/40 bg-warning/10 text-foreground [&>svg]:text-warning',
-      warning: 'border-destructive/40 bg-destructive/10 text-foreground [&>svg]:text-destructive',
-      safety: 'border-amber-500/40 bg-amber-500/10 text-foreground [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400',
+      info: 'bg-primary/[0.08] [&>svg]:text-primary',
+      caution: 'bg-warning/10 [&>svg]:text-warning',
+      warning: 'bg-destructive/10 [&>svg]:text-destructive',
+      safety: 'bg-warning/10 [&>svg]:text-warning',
     },
   },
   defaultVariants: { variant: 'info' },
@@ -27,8 +27,8 @@ function Alert({ className, variant = 'info', title, children, icon = true, ...p
   return (
     <div role={variant === 'warning' ? 'alert' : 'note'} className={cn(alertVariants({ variant }), className)} {...props}>
       {icon && <Icon aria-hidden="true" />}
-      <div className="min-w-0 space-y-1">
-        {title && <p className="font-semibold leading-tight">{title}</p>}
+      <div className="min-w-0 space-y-0.5">
+        {title && <p className="font-semibold leading-snug text-foreground">{title}</p>}
         <div className="text-muted-foreground [&_strong]:text-foreground">{children}</div>
       </div>
     </div>

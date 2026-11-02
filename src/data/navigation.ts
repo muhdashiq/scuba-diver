@@ -1,51 +1,90 @@
 import {
-  LayoutDashboard,
-  GraduationCap,
-  Waves,
-  Mountain,
-  Sparkles,
+  BookOpen,
   BrainCircuit,
   ClipboardCheck,
-  Route,
   CloudSun,
-  Store,
+  Compass,
   Fish,
-  UserRound,
+  GraduationCap,
+  Heart,
+  History,
+  House,
+  Mountain,
+  Route,
   Settings,
+  Sparkles,
+  Store,
+  CircleUserRound,
+  Waves,
   type LucideIcon,
 } from 'lucide-react';
 
 export interface NavItem {
   to: string;
   label: string;
-  short: string;
   icon: LucideIcon;
-  group: 'main' | 'learn' | 'dive' | 'explore' | 'account';
+  color: string; // icon-tile colour
 }
 
-export const NAV_ITEMS: NavItem[] = [
-  { to: '/', label: 'Dashboard', short: 'Home', icon: LayoutDashboard, group: 'main' },
-  { to: '/learn', label: 'Learn Scuba', short: 'Learn', icon: GraduationCap, group: 'learn' },
-  { to: '/open-water', label: 'Open Water', short: 'OW', icon: Waves, group: 'learn' },
-  { to: '/advanced-open-water', label: 'Advanced Open Water', short: 'AOW', icon: Mountain, group: 'learn' },
-  { to: '/specialties', label: 'Specialties', short: 'Specialties', icon: Sparkles, group: 'learn' },
-  { to: '/quiz', label: 'Knowledge Quiz', short: 'Quiz', icon: BrainCircuit, group: 'learn' },
-  { to: '/readiness', label: 'Dive Readiness', short: 'Ready', icon: ClipboardCheck, group: 'dive' },
-  { to: '/planner', label: 'Dive Planner', short: 'Plan', icon: Route, group: 'dive' },
-  { to: '/weather', label: 'Weather & Conditions', short: 'Weather', icon: CloudSun, group: 'dive' },
-  { to: '/dive-shops', label: 'Nearby Dive Shops', short: 'Shops', icon: Store, group: 'explore' },
-  { to: '/marine-life', label: 'Marine Life Library', short: 'Marine', icon: Fish, group: 'explore' },
-  { to: '/profile', label: 'My Profile', short: 'Profile', icon: UserRound, group: 'account' },
-  { to: '/settings', label: 'Settings', short: 'Settings', icon: Settings, group: 'account' },
+export interface Tab extends NavItem {
+  /** Secondary screens reached contextually from this tab. */
+  children: NavItem[];
+  /** Route prefixes that belong to this tab (for the active state). */
+  match: string[];
+}
+
+export const TABS: Tab[] = [
+  { to: '/', label: 'Home', icon: House, color: 'bg-primary', children: [], match: [] },
+  {
+    to: '/learn',
+    label: 'Learn',
+    icon: GraduationCap,
+    color: 'bg-[#5856D6]',
+    match: ['/learn', '/open-water', '/advanced-open-water', '/specialties', '/quiz'],
+    children: [
+      { to: '/open-water', label: 'Open Water', icon: BookOpen, color: 'bg-primary' },
+      { to: '/advanced-open-water', label: 'Advanced Open Water', icon: Mountain, color: 'bg-[#5856D6]' },
+      { to: '/specialties', label: 'Specialties', icon: Sparkles, color: 'bg-[#AF52DE]' },
+      { to: '/quiz', label: 'Knowledge Quiz', icon: BrainCircuit, color: 'bg-[#FF9500]' },
+    ],
+  },
+  {
+    to: '/dive',
+    label: 'Dive',
+    icon: Waves,
+    color: 'bg-teal',
+    match: ['/dive', '/planner', '/readiness', '/weather'],
+    children: [
+      { to: '/planner', label: 'Dive Planner', icon: Route, color: 'bg-primary' },
+      { to: '/readiness', label: 'Readiness Check', icon: ClipboardCheck, color: 'bg-[#34C759]' },
+      { to: '/weather', label: 'Weather & Conditions', icon: CloudSun, color: 'bg-[#32ADE6]' },
+    ],
+  },
+  {
+    to: '/explore',
+    label: 'Explore',
+    icon: Compass,
+    color: 'bg-[#FF9500]',
+    match: ['/explore', '/dive-shops', '/marine-life'],
+    children: [
+      { to: '/dive-shops', label: 'Dive Shops', icon: Store, color: 'bg-[#FF9500]' },
+      { to: '/marine-life', label: 'Marine Life', icon: Fish, color: 'bg-teal' },
+    ],
+  },
+  {
+    to: '/profile',
+    label: 'Profile',
+    icon: CircleUserRound,
+    color: 'bg-[#8E8E93]',
+    match: ['/profile', '/settings', '/favorites', '/history'],
+    children: [
+      { to: '/favorites', label: 'Favourites', icon: Heart, color: 'bg-[#FF2D55]' },
+      { to: '/history', label: 'History', icon: History, color: 'bg-[#5856D6]' },
+      { to: '/settings', label: 'Settings', icon: Settings, color: 'bg-[#8E8E93]' },
+    ],
+  },
 ];
 
-export const NAV_GROUP_LABELS: Record<NavItem['group'], string> = {
-  main: '',
-  learn: 'Learn',
-  dive: 'Dive',
-  explore: 'Explore',
-  account: 'Account',
-};
-
-/** Items shown in the mobile bottom bar; everything else lives in the menu sheet. */
-export const MOBILE_PRIMARY = ['/', '/learn', '/planner', '/weather'];
+export function activeTab(pathname: string): Tab {
+  return TABS.find((t) => t.match.some((m) => pathname === m || pathname.startsWith(`${m}/`))) ?? TABS[0];
+}

@@ -16,7 +16,7 @@ export function WeatherIcon({ icon, className, animated = true }: { icon: Weathe
         ? { opacity: [1, 0.6, 1] }
         : { y: [0, -3, 0] };
   const transition = icon === 'sun' ? { duration: 30, repeat: Infinity, ease: 'linear' as const } : { duration: 3, repeat: Infinity, ease: 'easeInOut' as const };
-  const color = icon === 'sun' ? 'text-amber-400' : icon === 'moon' ? 'text-indigo-300' : icon === 'storm' ? 'text-violet-400' : icon === 'rain' || icon === 'drizzle' ? 'text-sky-400' : 'text-slate-400';
+  const color = icon === 'sun' ? 'text-[#FFB800]' : icon === 'moon' ? 'text-[#5E5CE6]' : icon === 'storm' ? 'text-[#AF52DE]' : icon === 'rain' || icon === 'drizzle' ? 'text-[#32ADE6]' : 'text-muted-foreground';
   return (
     <motion.span className={cn('inline-flex', color, className)} animate={anim} transition={transition} aria-hidden="true">
       <Icon className="h-full w-full" />

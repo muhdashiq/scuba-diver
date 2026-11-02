@@ -7,6 +7,10 @@ import Dashboard from '@/pages/Dashboard';
 
 // Code-split every page except the dashboard for a fast first load.
 const Learning = lazy(() => import('@/pages/Learning'));
+const Dive = lazy(() => import('@/pages/Dive'));
+const Explore = lazy(() => import('@/pages/Explore'));
+const Favorites = lazy(() => import('@/pages/Favorites'));
+const History = lazy(() => import('@/pages/History'));
 const OpenWater = lazy(() => import('@/pages/OpenWater'));
 const LessonPage = lazy(() => import('@/pages/LessonPage'));
 const AdvancedOpenWater = lazy(() => import('@/pages/AdvancedOpenWater'));
@@ -37,6 +41,10 @@ export const routes = [
       { path: 'specialties', element: <Specialties /> },
       { path: 'specialties/:specialtyId', element: <SpecialtyPage /> },
       { path: 'quiz', element: <Quiz /> },
+      { path: 'dive', element: <Dive /> },
+      { path: 'explore', element: <Explore /> },
+      { path: 'favorites', element: <Favorites /> },
+      { path: 'history', element: <History /> },
       { path: 'readiness', element: <DiveReadiness /> },
       { path: 'planner', element: <DivePlanner /> },
       { path: 'weather', element: <Weather /> },
