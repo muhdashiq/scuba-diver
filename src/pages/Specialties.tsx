@@ -31,7 +31,7 @@ export default function Specialties() {
           </button>
         ))}
       </div>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((s) => (
           <LessonCard key={s.id} to={`/specialties/${s.id}`} title={s.title} summary={s.summary} illustration={s.illustration} completed={!!completed[lessonKey.specialty(s.id)]} meta={SPECIALTY_CATEGORIES[s.category]} />
         ))}

@@ -39,7 +39,7 @@ export default function Quiz() {
       </SafetyNotice>
 
       {phase.name === 'setup' && (
-        <div className="grid gap-6 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3"><QuizSetup onStart={start} /></div>
           <Card className="lg:col-span-2">
             <CardHeader className="flex-row items-center justify-between space-y-0">

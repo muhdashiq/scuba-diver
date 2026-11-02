@@ -24,7 +24,7 @@ export default function AdvancedOpenWater() {
     return (
       <article className="mx-auto max-w-5xl space-y-8">
         <Button asChild variant="ghost" size="sm" className="-ml-2"><Link to="/advanced-open-water"><ArrowLeft /> Advanced Open Water</Link></Button>
-        <div className="grid items-center gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2">
           <div className="space-y-3">
             <Badge variant="secondary">Adventure module</Badge>
             <h1 className="text-3xl font-extrabold sm:text-4xl">{m.title}</h1>
@@ -34,7 +34,7 @@ export default function AdvancedOpenWater() {
           <LessonIllustration k={m.illustration} className="aspect-[16/10] rounded-3xl border shadow-lg" />
         </div>
         <SafetyNotice title="Agency requirements vary">{AOW_NOTE}</SafetyNotice>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <InfoList title="Theory" items={m.theory} icon={BookOpen} className="md:col-span-2" />
           <InfoList title="Equipment considerations" items={m.equipment} icon={Backpack} />
           <InfoList title="Planning" items={m.planning} icon={ClipboardList} />
@@ -54,7 +54,7 @@ export default function AdvancedOpenWater() {
     <div className="space-y-8">
       <PageHeader icon={Mountain} eyebrow="Learning pathway" title="Advanced Open Water" description="Adventure modules that build on your Open Water foundation — theory, equipment, planning, skills and safety." />
       <SafetyNotice title="How many adventure dives?">{AOW_NOTE}</SafetyNotice>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {AOW_MODULES.map((m, i) => (
           <LessonCard key={m.id} to={`/advanced-open-water/${m.id}`} index={i + 1} title={m.title} summary={m.summary} illustration={m.illustration} completed={!!completed[m.id]} meta={`${m.check.length}-question quiz`} />
         ))}

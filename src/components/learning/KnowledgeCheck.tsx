@@ -29,7 +29,7 @@ export function KnowledgeCheck({ questions, onAllCorrect }: { questions: KC[]; o
               <span className="mr-2 text-primary">Q{qi + 1}.</span>
               {q.question}
             </p>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {q.options.map((opt, oi) => {
                 const isCorrect = oi === q.correctIndex;
                 const isSelected = sel === oi;

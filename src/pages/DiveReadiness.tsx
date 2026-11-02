@@ -38,7 +38,7 @@ export default function DiveReadiness() {
         Completing this checklist does not mean you are medically fit or that conditions are safe. If you have any doubt about your health, consult a physician familiar with dive medicine. Anyone can call off a dive at any time.
       </SafetyNotice>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           {CHECKLIST.map((cat, i) => (
             <ChecklistCategoryCard key={cat.id} index={i} category={cat} state={state} progress={progress.categories[i]} onToggle={setItem} onSetAll={setItems} />

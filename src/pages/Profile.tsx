@@ -56,11 +56,11 @@ export default function Profile() {
     <div className="space-y-6">
       <PageHeader icon={UserRound} eyebrow="Account" title="My Profile" description="Your diving profile and learning history are stored on this device." />
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <form onSubmit={save} className="lg:col-span-2" aria-label="Edit profile">
           <Card>
             <CardHeader><CardTitle className="text-base">Diver details</CardTitle></CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Name" htmlFor={ids.name}><Input id={ids.name} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} autoComplete="given-name" maxLength={60} /></Field>
               <Field label="Certification level" htmlFor={ids.cert}>
                 <NativeSelect id={ids.cert} value={form.certification} onChange={(e) => setForm({ ...form, certification: e.target.value as CertificationLevel })}>
@@ -115,7 +115,7 @@ export default function Profile() {
         </Card>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card>
           <CardHeader><CardTitle className="flex items-center gap-2 text-base"><BookOpenCheck className="h-5 w-5 text-primary" aria-hidden="true" /> Completed lessons</CardTitle></CardHeader>
           <CardContent>

@@ -50,7 +50,7 @@ export default function Settings() {
   return (
     <div className="space-y-6">
       <PageHeader icon={SettingsIcon} eyebrow="Account" title="Settings" description="Appearance, units and your data." />
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base"><Palette className="h-5 w-5 text-primary" aria-hidden="true" /> Theme</CardTitle>

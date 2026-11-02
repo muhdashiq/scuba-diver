@@ -44,7 +44,7 @@ export function UnderwaterScene({ showDiver = true, className = '' }: { showDive
 
       {showDiver && (
         <motion.div
-          className="absolute right-[4%] top-[36%] w-56 sm:w-72 lg:w-80"
+          className="absolute right-[4%] top-[36%] hidden w-56 sm:block sm:w-72 lg:w-80"
           animate={reduce ? undefined : { y: [0, -10, 0], x: [0, -12, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         >

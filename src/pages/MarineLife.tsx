@@ -131,7 +131,7 @@ function IdQuiz({ onClose }: { onClose: () => void }) {
         <DialogDescription>Question {i + 1} of {rounds.length} · Score {score}</DialogDescription>
       </DialogHeader>
       <MarineArt art={r.answer.art} palette={r.answer.palette} className="block aspect-[10/6] w-full rounded-2xl" label="Identify this species" />
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {r.options.map((o) => {
           const correct = o.id === r.answer.id;
           return (

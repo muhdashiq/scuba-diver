@@ -23,7 +23,7 @@ export default function Learning() {
       <SafetyNotice title="Learning here does not certify you">
         ScubaDive supports your studies. Certification requires a course with a qualified instructor from a recognised training agency, including in-water training.
       </SafetyNotice>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {courses.map(({ to, title, desc, icon: Icon, ill, progress }, i) => (
           <motion.div key={to} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} whileHover={{ y: -4 }}>
             <Link to={to} className="group flex h-full flex-col overflow-hidden rounded-3xl border bg-card shadow-sm transition-shadow hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">

@@ -107,13 +107,13 @@ export default function Dashboard() {
       {/* Stats */}
       <section aria-label="Your diving at a glance" className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatTile icon={Anchor} label="Dives logged" value={String(profile.completedDives)} sub={profile.completedDives ? 'Keep exploring' : 'Update in profile'} to="/profile" />
-        <Card className="col-span-1 flex items-center gap-3 p-4">
-          <ProgressRing value={progress.overall.percent} size={64} stroke={7} label={`Learning progress ${progress.overall.percent}%`}>
+        <Card className="col-span-1 flex items-center gap-2.5 p-3 sm:gap-3 sm:p-4">
+          <ProgressRing value={progress.overall.percent} size={52} stroke={6} label={`Learning progress ${progress.overall.percent}%`}>
             <span className="text-sm font-bold tabular">{progress.overall.percent}%</span>
           </ProgressRing>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Learning</p>
-            <p className="text-sm font-semibold">{progress.overall.done}/{progress.overall.total} modules</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground sm:text-xs">Learning</p>
+            <p className="text-sm font-semibold leading-tight">{progress.overall.done}/{progress.overall.total} modules</p>
           </div>
         </Card>
         <StatTile
@@ -127,7 +127,7 @@ export default function Dashboard() {
         <StatTile icon={Trophy} label="Quiz average" value={avgQuiz !== null ? `${avgQuiz}%` : '—'} sub={`${quizHistory.length} quiz${quizHistory.length === 1 ? '' : 'zes'} taken`} to="/quiz" />
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Learning progress */}
         <Card className="lg:col-span-2">
           <CardHeader className="flex-row items-center justify-between space-y-0">
@@ -150,10 +150,10 @@ export default function Dashboard() {
             ))}
             {progress.nextLesson && (
               <div className="flex items-center gap-4 rounded-2xl bg-secondary/60 p-3">
-                <LessonIllustration k={progress.nextLesson.illustration} compact className="h-16 w-24 shrink-0 rounded-xl" />
+                <LessonIllustration k={progress.nextLesson.illustration} compact className="hidden h-16 w-24 shrink-0 rounded-xl min-[380px]:block" />
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-semibold uppercase tracking-wide text-primary">Up next</p>
-                  <p className="truncate font-semibold">{progress.nextLesson.title}</p>
+                  <p className="line-clamp-2 font-semibold leading-snug">{progress.nextLesson.title}</p>
                 </div>
                 <Button asChild size="sm"><Link to={`/open-water/${progress.nextLesson.id}`}>Start</Link></Button>
               </div>
@@ -164,7 +164,7 @@ export default function Dashboard() {
         <WeatherSummaryCard location={lastLocation} />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Upcoming plans */}
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
@@ -210,7 +210,7 @@ export default function Dashboard() {
             {lastLocation && shops.status === 'error' && <p className="text-sm text-muted-foreground">Couldn’t load dive shops right now. <Link className="text-primary underline" to="/dive-shops">Try on the dive shops page</Link>.</p>}
             {shops.data && shops.data.length === 0 && <p className="text-sm text-muted-foreground">No dive shops listed within 25 km of {lastLocation?.name}.</p>}
             {shops.data && shops.data.length > 0 && (
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {shops.data.slice(0, 3).map((s) => <DiveShopCard key={s.id} shop={s} compact />)}
               </div>
             )}
@@ -277,13 +277,13 @@ function StatTile({ icon: Icon, label, value, sub, to, tone }: { icon: typeof An
   const toneCls = tone === 'success' ? 'text-success bg-success/15' : tone === 'warning' ? 'text-warning bg-warning/15' : tone === 'destructive' ? 'text-destructive bg-destructive/15' : 'text-primary bg-primary/10';
   return (
     <Link to={to} className="group rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-      <Card className="flex h-full items-center gap-3 p-4 transition-shadow group-hover:shadow-md">
-        <span className={cn('flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl', toneCls)}>
-          <Icon className="h-6 w-6" aria-hidden="true" />
+      <Card className="flex h-full items-center gap-2.5 p-3 transition-shadow group-hover:shadow-md sm:gap-3 sm:p-4">
+        <span className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl sm:h-12 sm:w-12 sm:rounded-2xl', toneCls)}>
+          <Icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
         </span>
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
-          <p className="text-2xl font-extrabold tabular leading-tight">{value}</p>
+          <p className="text-[11px] font-semibold uppercase leading-tight tracking-wide text-muted-foreground sm:text-xs">{label}</p>
+          <p className="text-xl font-extrabold tabular leading-tight sm:text-2xl">{value}</p>
           <p className="truncate text-xs text-muted-foreground">{sub}</p>
         </div>
       </Card>

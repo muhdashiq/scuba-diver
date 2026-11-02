@@ -69,7 +69,7 @@ export default function Weather() {
       {!location && <EmptyState icon={CloudSun} title="No location selected" message="Choose a dive destination to load live weather, wind and marine conditions." />}
 
       {location && weather.status === 'loading' && !w && (
-        <div className="grid gap-4 lg:grid-cols-3" role="status" aria-label="Loading weather">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3" role="status" aria-label="Loading weather">
           <Skeleton className="h-64 lg:col-span-1" />
           <Skeleton className="h-64 lg:col-span-2" />
           <Skeleton className="h-72 lg:col-span-3" />
@@ -82,7 +82,7 @@ export default function Weather() {
 
       {w && (
         <>
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
             {/* Current weather */}
             <Card className="overflow-hidden">
               <div className="ocean-gradient p-5 text-white">

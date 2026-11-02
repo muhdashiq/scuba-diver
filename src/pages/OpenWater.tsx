@@ -25,7 +25,7 @@ export default function OpenWater() {
         }
       />
       <SafetyNotice>These lessons support — but never replace — an Open Water course with in-water training by a qualified instructor.</SafetyNotice>
-      <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {OPEN_WATER_LESSONS.map((l) => (
           <li key={l.id}>
             <LessonCard to={`/open-water/${l.id}`} index={l.order} title={l.title} summary={l.summary} illustration={l.illustration} duration={l.duration} completed={!!completed[l.id]} />

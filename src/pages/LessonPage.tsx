@@ -48,7 +48,7 @@ export default function LessonPage() {
       <Card className="border-primary/30 bg-primary/5">
         <CardContent className="p-5">
           <h2 className="mb-3 flex items-center gap-2 font-bold"><Target className="h-5 w-5 text-primary" aria-hidden="true" /> Learning objectives</h2>
-          <ul className="grid gap-2 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {lesson.objectives.map((o) => (
               <li key={o} className="flex gap-2 text-sm"><Circle className="mt-1 h-3 w-3 shrink-0 text-primary" aria-hidden="true" />{o}</li>
             ))}
@@ -64,7 +64,7 @@ export default function LessonPage() {
               {s.body.map((p) => <p key={p}>{p}</p>)}
             </div>
             {s.bullets && (
-              <ul className="grid gap-2 sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {s.bullets.map((b) => (
                   <li key={b} className="flex items-start gap-2 rounded-xl border bg-card p-3 text-sm"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" aria-hidden="true" />{b}</li>
                 ))}
@@ -83,7 +83,7 @@ export default function LessonPage() {
         ))}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Card>
           <CardContent className="space-y-2 p-5">
             <h2 className="flex items-center gap-2 font-bold"><Globe2 className="h-5 w-5 text-primary" aria-hidden="true" /> Real-world example</h2>

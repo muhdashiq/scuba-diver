@@ -48,7 +48,7 @@ export function EmptyState({ icon: Icon = Inbox, title, message, action }: { ico
 
 export function CardGridSkeleton({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className="space-y-3 rounded-2xl border p-4">
           <Skeleton className="h-36 w-full" />

@@ -138,7 +138,7 @@ export default function DivePlanner() {
         <strong> The final plan must be agreed with your buddy/team and the responsible dive professional.</strong>
       </SafetyNotice>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
         {/* ---------------- Form ---------------- */}
         <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); handleSave(); }} noValidate aria-label="Dive plan inputs">
           <Card>
@@ -151,12 +151,12 @@ export default function DivePlanner() {
                 <p className="text-xs font-medium text-muted-foreground">Optional: find coordinates for live conditions</p>
                 <LocationSearch
                   label="Search site coordinates"
-                  placeholder="Search nearest town or dive area…"
+                  placeholder="Search town or dive area…"
                   onSelect={(l) => setInput((c) => ({ ...c, site: c.site || l.name, latitude: l.latitude, longitude: l.longitude }))}
                 />
                 {loc && <p className="text-xs text-muted-foreground">Coordinates: {loc.latitude.toFixed(3)}, {loc.longitude.toFixed(3)} <button type="button" className="ml-2 font-semibold text-primary hover:underline" onClick={() => setInput((c) => ({ ...c, latitude: undefined, longitude: undefined }))}>clear</button></p>}
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Dive date & time" htmlFor={ids.date} error={err('dateTime')}>
                   <Input id={ids.date} type="datetime-local" value={input.dateTime} onChange={(e) => set('dateTime', e.target.value)} aria-invalid={!!err('dateTime')} />
                 </Field>
@@ -171,7 +171,7 @@ export default function DivePlanner() {
 
           <Card>
             <CardHeader><CardTitle className="flex items-center gap-2 text-base"><Users className="h-5 w-5 text-primary" aria-hidden="true" /> Divers</CardTitle></CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Certification level" htmlFor={ids.cert}>
                 <NativeSelect id={ids.cert} value={input.certification} onChange={(e) => set('certification', e.target.value as DivePlanInput['certification'])}>
                   {Object.entries(CERTIFICATION_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
@@ -191,7 +191,7 @@ export default function DivePlanner() {
 
           <Card>
             <CardHeader><CardTitle className="flex items-center gap-2 text-base"><Waves className="h-5 w-5 text-primary" aria-hidden="true" /> Depth & time</CardTitle></CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <NumberField label="Planned maximum depth" unit={depthUnit(units)} value={r1(fromMetricDepth(input.maxDepth, units))} onChange={(v) => set('maxDepth', toMetricDepth(v, units))} min={1} step={units === 'imperial' ? 5 : 1} error={err('maxDepth')} />
               <NumberField label="Planned bottom time" unit="min" value={input.bottomTime} onChange={(v) => set('bottomTime', v)} min={1} error={err('bottomTime')} hint="From leaving the surface to starting the ascent" />
               <NumberField label="Descent rate" unit={`${depthUnit(units)}/min`} value={r1(fromMetricDepth(input.descentRate, units))} onChange={(v) => set('descentRate', toMetricDepth(v, units))} error={err('descentRate')} />
@@ -208,7 +208,7 @@ export default function DivePlanner() {
               <CardTitle className="flex items-center gap-2 text-base"><Cylinder className="h-5 w-5 text-primary" aria-hidden="true" /> Gas</CardTitle>
               <CardDescription>Used for an educational gas-use estimate only.</CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <NumberField label="Cylinder size (water capacity)" unit="L" value={input.cylinderSize} onChange={(v) => set('cylinderSize', v)} step={0.5} error={err('cylinderSize')} hint="An aluminium 80 is roughly 11.1 L" />
               <Field label="Breathing gas" htmlFor={ids.gas}>
                 <NativeSelect id={ids.gas} value={input.gas} onChange={(e) => set('gas', e.target.value as DivePlanInput['gas'])}>
@@ -224,7 +224,7 @@ export default function DivePlanner() {
 
           <Card>
             <CardHeader><CardTitle className="flex items-center gap-2 text-base"><Wind className="h-5 w-5 text-primary" aria-hidden="true" /> Conditions</CardTitle></CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <NumberField label="Water temperature" unit={tempUnit(units)} value={r1(fromMetricTemp(input.waterTemp, units))} onChange={(v) => set('waterTemp', toMetricTemp(v, units))} error={err('waterTemp')} />
                 {weather.data?.marine?.seaSurfaceTemperature != null && (
@@ -285,7 +285,7 @@ export default function DivePlanner() {
             <CardContent>
               <DiveProfileChart profile={diveProfile} units={units} />
               {diveProfile.length > 0 && (
-                <ol className="mt-4 grid gap-2 sm:grid-cols-4" aria-label="Dive timeline">
+                <ol className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-4" aria-label="Dive timeline">
                   {[
                     { label: 'Descent', from: 0, to: diveProfile[1].time },
                     { label: 'Bottom', from: diveProfile[1].time, to: diveProfile[2].time },
@@ -349,7 +349,7 @@ export default function DivePlanner() {
             </CardContent>
           </Card>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <ListCard title="Buddy considerations" icon={Users} items={buddyConsiderations(input)} />
             <ListCard title="Entry & exit" icon={MapPin} items={entryExitInfo(input)} />
           </div>

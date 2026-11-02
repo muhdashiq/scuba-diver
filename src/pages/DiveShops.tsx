@@ -82,7 +82,7 @@ export default function DiveShops() {
       {location && shops.status === 'error' && !shops.data && <ErrorState title="Couldn’t load dive shops" message={errorMessage(shops.error)} onRetry={shops.refetch} />}
 
       {location && (shops.data || shops.status === 'loading') && (
-        <div className={view === 'both' ? 'grid gap-5 lg:grid-cols-5' : 'space-y-5'}>
+        <div className={view === 'both' ? 'grid grid-cols-1 gap-5 lg:grid-cols-5' : 'space-y-5'}>
           {view !== 'cards' && (
             <div className={view === 'both' ? 'lg:col-span-2 lg:sticky lg:top-6 lg:self-start' : ''}>
               <Suspense fallback={<Skeleton className="h-96 w-full rounded-2xl" />}>
@@ -96,7 +96,7 @@ export default function DiveShops() {
               {shops.data && list.length === 0 && (
                 <EmptyState icon={Store} title="No dive shops found" message={`No dive centres are listed on OpenStreetMap within ${radius} km${onlyWhatsApp ? ' with a WhatsApp-ready number' : ''}. Try a larger radius or a nearby town.`} />
               )}
-              <div className={view === 'both' ? 'grid gap-4 sm:grid-cols-2' : 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3'}>
+              <div className={view === 'both' ? 'grid grid-cols-1 gap-4 sm:grid-cols-2' : 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'}>
                 {list.map((s) => (
                   <div key={s.id} id={`shop-${s.id.replace('/', '-')}`}>
                     <DiveShopCard shop={s} selected={s.id === selected} onSelect={(x) => setSelected(x.id)} onWhatsApp={setWaShop} />

@@ -23,7 +23,7 @@ export default function SpecialtyPage() {
   return (
     <article className="mx-auto max-w-5xl space-y-8">
       <Button asChild variant="ghost" size="sm" className="-ml-2"><Link to="/specialties"><ArrowLeft /> Specialties</Link></Button>
-      <div className="grid items-center gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2">
         <div className="space-y-3">
           <Badge variant="secondary">{SPECIALTY_CATEGORIES[s.category]}</Badge>
           <h1 className="text-3xl font-extrabold sm:text-4xl">{s.title}</h1>
@@ -35,14 +35,14 @@ export default function SpecialtyPage() {
 
       <SafetyNotice title="This lesson does not qualify you for specialty dives">{SPECIALTY_DISCLAIMER}</SafetyNotice>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <InfoList title="Prerequisites (typical)" items={s.prerequisites} icon={ListChecks} />
         <InfoList title="Required equipment" items={s.equipment} icon={Backpack} />
       </div>
 
       <section className="space-y-4">
         <h2 className="flex items-center gap-2 text-xl font-bold"><BookOpen className="h-5 w-5 text-primary" aria-hidden="true" /> Theory lessons</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {s.theory.map((t, i) => (
             <Card key={t.heading}>
               <CardContent className="space-y-2 p-5">
@@ -55,7 +55,7 @@ export default function SpecialtyPage() {
         </div>
       </section>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <InfoList title="Important skills" items={s.skills} icon={Dumbbell} tone="success" />
         <InfoList title="Risks & safety considerations" items={s.risks} icon={AlertTriangle} tone="warning" />
       </div>

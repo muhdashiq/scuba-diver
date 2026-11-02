@@ -160,7 +160,7 @@ export function QuizRunner({ questions, timeLimit, onFinish, onQuit }: { questio
                       <p className="text-sm text-muted-foreground">{q.explanation}</p>
                     </div>
                     {q.visual && (
-                      <ul className="grid gap-2 sm:grid-cols-2">
+                      <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                         {q.visual.annotations.map((a) => (
                           <li key={a.label} className="rounded-xl border bg-card p-3 text-sm">
                             <p className="font-semibold">{a.label}</p>

@@ -64,6 +64,10 @@
 
   * { @apply border-border; }
   html { -webkit-tap-highlight-color: transparent; }
+  html, body { max-width: 100%; overflow-x: clip; }
+  /* Grid items default to min-width:auto, which lets long content (URLs, maps, rows of
+     buttons) push a track wider than the screen. Allow them to shrink instead. */
+  .grid > * { min-width: 0; }
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: 'cv11', 'ss01';

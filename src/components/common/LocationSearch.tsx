@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 /** Accessible place search (combobox) with an optional "use my location" button. */
-export function LocationSearch({ onSelect, placeholder = 'Search a dive destination, town or beach…', showLocate = true, label = 'Search location', className }: { onSelect: (l: GeoLocation) => void; placeholder?: string; showLocate?: boolean; label?: string; className?: string }) {
+export function LocationSearch({ onSelect, placeholder = 'Search a destination…', showLocate = true, label = 'Search location', className }: { onSelect: (l: GeoLocation) => void; placeholder?: string; showLocate?: boolean; label?: string; className?: string }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<GeoLocation[]>([]);
   const [open, setOpen] = useState(false);
